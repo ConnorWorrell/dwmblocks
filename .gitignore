@@ -1,5 +1,9 @@
 # Custom blocks file
+blocks
 config.h
+dwmblocks
+sigdwmblocks/sigdwmblocks
+xgetrootname/xgetrootname
 
 # Prerequisites
 *.d

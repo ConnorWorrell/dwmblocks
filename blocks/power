@@ -1,0 +1,48 @@
+#!/bin/dash
+
+# emoji support requires ttf-font-awesome 5.15.3-1
+
+case $1 in
+	1) notify-send "Battery Status" "Battery Status Information
+: plugged in
+: no battery
+: battery charging
+: battery full
+: battery discharging"
+exit 0;;
+
+esac
+
+plug=""
+noBattery=""
+fullBattery=""
+chargBattery=""
+disBattery=""
+
+# Test for wall outlet plugin
+ac="$( cat /sys/class/power_supply/AC/online )"
+if [ $ac = "1" ]
+then
+	acOutput=$plug
+else
+	acOutput=""
+fi
+
+# Test for battery plug in
+if [ -d "/sys/class/power_supply/BAT0/" ] 
+then
+	# battery plugged in
+	batcapacity="$( cat /sys/class/power_supply/BAT0/capacity)"
+	batstatus="$( cat /sys/class/power_supply/BAT0/status)"	
+	case "$batstatus" in
+		"Full") batOutput=$fullBattery ;;
+		"Charging") batOutput=$chargBattery ;;
+		"Discharging") batOutput=$disBattery ;;
+	esac
+	#[ $batstatus == "Full" ] && batOutput=$fullBattery
+	#[ $batstatus == "Charging" ] && batOutput=$chargBattery
+	#[ $batstatus == "Discharging" ] && batOutput=$disBattery
+fi
+
+printf "%s %s %s" "$acOutput" "$batOutput" "$batcapacity%"
+sleep 0.1

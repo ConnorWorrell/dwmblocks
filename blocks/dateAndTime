@@ -1,0 +1,4 @@
+#!/bin/dash
+
+printf "%s" "$( date | awk '{ split($4,time,":"); print $2 " " $3 " (" $1 ") " time[1] ":" time[2] " " $5 }' )"
+

@@ -1,0 +1,10 @@
+#!/bin/dash
+
+case $1 in
+	1) notify-send "uu"; exit ;;
+esac
+
+image=""
+upgrades=$(pacman -Qu | wc | awk '{ print $1 }')
+
+printf "%s %s" "$image" "$upgrades"

@@ -46,6 +46,7 @@ static Block blocks[] = {
         { PATH("cpuTemp"),    	        PATH("cpuTemp"),     		    1,              4},
         { PATH("bandwidth"),            PATH("bandwidth"), 		        1,              2},
         { PATH("memUsage"),             PATH("memUsage"),      			5,             	3},
+        { PATH("upgradeCount"),         PATH("upgradeCount"),   		3600,           6},
 		{ PATH("power"),				PATH("power"), 					4,				5},
         { PATH("dateAndTime"),          NULL,                           1,              1},
         { NULL } /* just to mark the end of the array */

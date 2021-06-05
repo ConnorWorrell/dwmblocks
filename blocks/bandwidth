@@ -81,6 +81,13 @@ path="/tmp/$(basename $0)-${INTERFACE}"
 read rx < "/sys/class/net/${INTERFACE}/statistics/rx_bytes"
 read tx < "/sys/class/net/${INTERFACE}/statistics/tx_bytes"
 
+# write current data if file does not exist. Do not exit, this will cause
+# problems if this file is sourced instead of executed as another process.
+if ! [ -f "${path}" ]; then
+  echo "${time} ${rx} ${tx} 0 0" > "${path}"
+  chmod 0666 "${path}"
+fi
+
 # get time
 time=$(date +%s)
 read old < "${path}"
@@ -98,13 +105,6 @@ if [ "${time_diff}" -lt 1 ]
 then
 	display $old3 $old4
 	exit 0
-fi
-
-# write current data if file does not exist. Do not exit, this will cause
-# problems if this file is sourced instead of executed as another process.
-if ! [ -f "${path}" ]; then
-  echo "${time} ${rx} ${tx} 0 0" > "${path}"
-  chmod 0666 "${path}"
 fi
 
 if [ "$old3" = "" ] || [ "$old4" = "" ]; then

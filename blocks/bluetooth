@@ -1,0 +1,41 @@
+#!/bin/dash
+
+case $1 in 
+	1) blueman-manager; exit;; 
+esac
+
+# check if bluetoothh usb dongle is plugged in
+[ "$(lsusb | grep -i "blu" | tr -d '[[:space:]]' | wc | awk '{print $2}')" = '0' ] && echo "󰂲" && exit 
+
+Connections=$(bt-device --list | awk 'NF>1{print $NF}' | tr -d '()')
+
+displayLength="3"
+output=""
+Connection="0"
+
+for device in $Connections
+do
+	# skip the first line which contains no info
+	[ $device = "devices:" ] && continue
+	deviceInfo=$(bt-device --info=$device)	
+	Name=$(echo $deviceInfo | sed -e 's/.*Name: \(.*\) Alias.*/\1/')
+	Connected=$(echo $deviceInfo | sed -e 's/.*Connected: \(.*\) UUIDs.*/\1/')
+	
+	if [ $Connected = "1" ] 
+	then
+		Length=$displayLength
+		[ ${#Name} -lt $displayLength ] && Length=${#Name}
+		output=$(printf " %*.*s%s" 0 $Length "$Name" "$output")
+		Connection="1"
+	fi
+
+done
+
+if [ $Connection = "1" ] 
+then 
+	printf "%s%s" "󰂯" "$output"
+	exit
+fi
+
+printf "%s" "󰂯"
+

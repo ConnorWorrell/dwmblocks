@@ -1,4 +1,9 @@
 #!/bin/dash
 
+case $1 in
+	1) pkill calcurse
+	   setsid -f "urxvt" -e calcurse ;;
+esac
+
 printf "%s" "$( date | awk '{ split($4,time,":"); print $2 " " $3 " (" $1 ") " time[1] ":" time[2] " " $5 }' )"
 

@@ -1,7 +1,8 @@
 #!/bin/dash
 
 case $1 in
-	1) notify-send "mem"; exit ;;
+	1) notify-send "Memory hogs" "$(ps axch -o cmd:15,%mem --sort=-%mem | head)"
+	   exit ;;
 esac
 
 memUsage=$( free -h | awk '/^Mem/ { print $3"/"$2 }' | sed s/i//g )

@@ -1,8 +1,8 @@
 #!/bin/dash
 
-case $1 in
-	1) notify-send "cpu"; exit ;;
-esac
+#case $1 in
+#	1) notify-send "cpu"; exit ;;
+#esac
 
 #temp=$(< /sys/class/thermal/thermal_zone0/device/thermal_zone/temp)
 temp=$(sensors | awk '/Core 0/ {print "" $3}')

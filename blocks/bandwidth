@@ -28,41 +28,47 @@
 averagingSpeed=2
 
 display () {
-	if [ $(( $1 << 3 )) -lt 1024 ]
+	if [ $(( $1 << 3 )) -lt 1000 ]
 	then
 		inVar="b"
 		inSpd="$(( $1 << 3 ))"
 		inPad=$(( 4 - ${#inSpd} ))
-	elif [ $(( $1 >> 7 )) -lt 1024 ]
+		inFormat="%s"
+	elif [ $(( $1 >> 7 )) -lt 1000 ]
 	then
-		inVar="Kb"
+		inVar="K"
 		inSpd="$(( $1 >> 7 ))"
 		inPad=$(( 3 - ${#inSpd} ))
+		inFormat="%s"
 	else
-		inVar="Mb"
-		inSpd="$(( $1 >> 17 ))"
-		inPad=$(( 3 - ${#inSpd} ))
+		inVar="M"
+		inSpd=$( echo "$1 / 131072" | bc -l )
+		inPad="0"
+		inFormat="%.1f"
 	fi
 
-	if [ $(( $2 << 3 )) -lt 1024 ]
+	if [ $(( $2 << 3 )) -lt 1000 ]
 	then
 		outVar="b"
 		outSpd="$(( $2 << 3 ))"
 		outPad=$(( 4 - ${#outSpd} ))
-	elif [ $(( $2 >> 7 )) -lt 1024 ]
+		outFormat="%s"
+	elif [ $(( $2 >> 7 )) -lt 1000 ]
 	then
-		outVar="Kb"
+		outVar="K"
 		outSpd="$(( $2 >> 7 ))"
 		outPad=$(( 3 - ${#outSpd} ))
+		outFormat="%s"
 	else
-		outVar="Mb"
-		outSpd="$(( $2 >> 17 ))"
-		outPad=$(( 3 - ${#outSpd} ))
+		outVar="M"
+		outSpd=$( echo "$2 / 131072" | bc -l )
+		outFormat="%.1f"
+		outPad="0"
 	fi
 
 	pad=$(printf '%0.6s' "       ")
 
-	printf "%*.*s%s%s%s %*.*s%s%s%s" 0 $inPad "$pad" "$INLABEL" "$inSpd" "$inVar" 0 $outPad "$pad" "$OUTLABEL" "$outSpd" "$outVar"
+	printf "%*.*s%s$inFormat%s %*.*s%s$outFormat%s" 0 $inPad "$pad" "$INLABEL" "$inSpd" "$inVar" 0 $outPad "$pad" "$OUTLABEL" "$outSpd" "$outVar"
 
 }
 

@@ -1,8 +1,9 @@
 #!/bin/dash
 
-#case $1 in
-#	1) notify-send "uu"; exit ;;
-#esac
+case $1 in
+	1) notify-send "$(yay -Qu)"; exit ;;
+	3) setsid -f "urxvt" -e yay -Su && pkill -RTMIN+6 dwmblocks; exit ;;
+esac
 
 image=""
 

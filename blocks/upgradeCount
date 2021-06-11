@@ -1,12 +1,14 @@
 #!/bin/dash
 
 case $1 in
-	1) notify-send "$(yay -Qu)"; exit ;;
+	1) notify-send "$(cat /tmp/upgrades)"; exit ;;
 	3) setsid -f "urxvt" -e sh -c "yay -Su && pkill -RTMIN+6 dwmblocks"; exit ;;
 esac
 
 image=""
 
-upgrades=$(pacman -Qu | wc | awk '{ print $1 }')
+yay -Qu > /tmp/upgrades
+
+upgrades=$(cat /tmp/upgrades | wc | awk '{ print $1 }')
 
 printf "%s %s" "$image" "$upgrades"

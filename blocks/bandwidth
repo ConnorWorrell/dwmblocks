@@ -32,7 +32,7 @@ display () {
 	then
 		inVar="b"
 		inSpd="$(( $1 << 3 ))"
-		inPad=$(( 4 - ${#inSpd} ))
+		inPad=$(( 3 - ${#inSpd} ))
 		inFormat="%s"
 	elif [ $(( $1 >> 7 )) -lt 1000 ]
 	then
@@ -51,7 +51,7 @@ display () {
 	then
 		outVar="b"
 		outSpd="$(( $2 << 3 ))"
-		outPad=$(( 4 - ${#outSpd} ))
+		outPad=$(( 3 - ${#outSpd} ))
 		outFormat="%s"
 	elif [ $(( $2 >> 7 )) -lt 1000 ]
 	then

@@ -2,6 +2,7 @@
 
 case $1 in 
 	1) blueman-manager; exit;; 
+	3) setsid -f "urxvt" -e systemctl restart bluetooth;;
 esac
 
 # check if bluetoothh usb dongle is plugged in

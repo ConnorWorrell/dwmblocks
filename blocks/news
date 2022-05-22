@@ -1,4 +1,4 @@
-#!/bin/dash
+#!/bin/bash
 
 case $1 in 
 	1) setsid -f "urxvt" -e sh -c "newsboat && pkill -RTMIN+8 dwmblocks"; exit ;; 
@@ -6,4 +6,6 @@ case $1 in
 esac
 
 output=$(newsboat -x print-unread | awk '{ print $1 }')
+[ "$(echo $output | cut -d\  -f1-1)" == "Failed" ] && exit
+
 printf "%s%s" "M" "$output"

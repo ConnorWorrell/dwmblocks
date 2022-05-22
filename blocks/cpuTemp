@@ -1,4 +1,4 @@
-#!/bin/dash
+#!/bin/bash
 
 #case $1 in
 #	1) notify-send "cpu"; exit ;;
@@ -6,4 +6,5 @@
 
 #temp=$(< /sys/class/thermal/thermal_zone0/device/thermal_zone/temp)
 temp=$(sensors | awk '/Core 0/ {print "" $3}')
+[ "$temp" == "" ] && exit
 printf " %sC" "$(echo "$temp" | cut -c2-3)"

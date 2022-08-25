@@ -7,4 +7,4 @@
 #temp=$(< /sys/class/thermal/thermal_zone0/device/thermal_zone/temp)
 temp=$(sensors | awk '/Core 0/ {print "" $3}')
 [ "$temp" == "" ] && exit
-printf " %sC" "$(echo "$temp" | cut -c2-3)"
+printf " %sC" "$(echo "$temp" | grep -o -E '[0-9]+' | head -1)"

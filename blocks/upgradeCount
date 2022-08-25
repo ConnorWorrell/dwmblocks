@@ -2,13 +2,20 @@
 
 case $1 in
 	1) notify-send "$(cat /tmp/upgrades)"; pkill -RTMIN+6 dwmblocks; exit ;;
-	3) setsid -f "urxvt" -e sh -c "yay -Su && pkill -RTMIN+6 dwmblocks" || notify-send "Upgrade failed"; exit ;;
+	3) setsid -f "st" -e sh -c "yay -Syu || ( notify-send -u critical \"Upgrade Error\" ) && pkill -RTMIN+6 dwmblocks" || notify-send "Upgrade failed"; exit ;;
 esac
 
 image=""
+internetConnection=$(ping -q -w 1 -c 1 `ip r | grep default | cut -d ' ' -f 3` > /dev/null && echo ok || echo error)
 
-yay -Qu > /tmp/upgrades
-
-upgrades=$(cat /tmp/upgrades | wc | awk '{ print $1 }')
+if [ "$internetConnection" = "error" ]
+then
+	[ -f /tmp/upgrades ] && upgrades=$(cat /tmp/upgrades | wc | awk '{ print $1 }') || upgrades="?"
+	
+else
+	yay -Qu > /tmp/upgrades
+	upgrades=$(cat /tmp/upgrades | wc | awk '{ print $1 }')
+fi
 
 printf "%s %s" "$image" "$upgrades"
+

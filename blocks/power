@@ -22,7 +22,8 @@ chargBattery=""
 disBattery=""
 
 # Test for wall outlet plugin
-ac="$( cat /sys/class/power_supply/AC/online )"
+[ -d /sys/class/power_supply/AC/ ] && ac="$( cat /sys/class/power_supply/AC/online )"
+[ -d /sys/class/power_supply/ACAD/ ] && ac="$( cat /sys/class/power_supply/ACAD/online )"
 if [ $ac = "1" ]
 then
 	acOutput=$plug
@@ -31,11 +32,15 @@ else
 fi
 
 # Test for battery plug in
-if [ -d "/sys/class/power_supply/BAT0/" ] 
+[ -d /sys/class/power_supply/BAT0 ] && bat="BAT0"
+[ -d /sys/class/power_supply/BAT1 ] && bat="BAT1"
+bat="BAT1"
+
+if [ "$bat" != "" ]
 then
 	# battery plugged in
-	batcapacity="$( cat /sys/class/power_supply/BAT0/capacity)"
-	batstatus="$( cat /sys/class/power_supply/BAT0/status)"	
+	batcapacity="$( cat /sys/class/power_supply/$bat/capacity)"
+	batstatus="$( cat /sys/class/power_supply/$bat/status)"	
 	case "$batstatus" in
 		"Full") batOutput=$fullBattery ;;
 		"Charging") batOutput=$chargBattery ;;
